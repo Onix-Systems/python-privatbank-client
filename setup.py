@@ -7,7 +7,7 @@ def readme():
 
 
 setup(
-  name='python-internal-privat',
+  name='python_internal_privat',
   version='0.0.1',
   author='ihor.sotnyk',
   author_email='ihor.sotnyk@onix-systems.com',
