@@ -22,15 +22,14 @@ PRIVATBANK_CURRENCY_NON_CASHE_RATE_URI = os.getenv(
     'PRIVATBANK_CURRENCY_NON_CASHE_RATE_URI', 'https://api.privatbank.ua/p24api/pubinfo?exchange&coursid=11'
 )
 
-PAYMENT_DESTINATION = os.getenv(
-    'PAYMENT_DESTINATION', 'test create payment to rest API'
-)
+PRIVATBANK_BALANCE_URI_BODY='{0}?acc={1}&startDate={2}'
+PRIVATBANK_STATEMENT_URI_BODY='{0}?acc={1}&startDate={2}&limit={3}'
 
-DOCUMENT_NUMBER='autoclient'
-RECIPIENT_NCEO='14360570'
-PAYMENT_NAMING='ПАО, ПАО КБ ПРИВАТБАНК'
+DOCUMENT_NUMBER="autoclient"
+RECIPIENT_NCEO="14360570"
+PAYMENT_NAMING="ПАО, ПАО КБ ПРИВАТБАНК"
 RECIPIENT_IFI="305299"
-RECIPIENT_IFI_TEXT='ПАТ КБ \"ПРИВАТБАНК\"'
-PAYMENT_CCY='UAH'
-DOCUMENT_TYPE='cr'
-DAY_UTC=86400   # 1 day (UNIX)
+RECIPIENT_IFI_TEXT="ПАТ КБ \"ПРИВАТБАНК\""
+PAYMENT_DESTINATION="test create pmnt to rest API"
+PAYMENT_CCY="UAH"
+DOCUMENT_TYPE="cr"
