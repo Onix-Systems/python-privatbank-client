@@ -234,23 +234,15 @@ class PrivatManager:
 
     def get_balance(self) -> Tuple[int, Dict[str, Any]]:
         try:
-            payload = self.get_client_info()
-            if payload[0] == 200:
-                balance = {
-                    "balance": payload[1]["balances"][0]["balanceOutEq"]
-                }
-                return balance
-            else:
-                error_response = {
-                    "code": payload[0],
-                    "detail": payload[1]
-                }
-                return error_response
-        except Exception as exc:
-            exception = {
-                "detail": str(exc)
+            response = self.get_client_info()
+            code = response[0]
+            payload = response[1]
+            balance = {
+                "balance": payload["balances"][0]["balanceOutEq"]
             }
-            return exception
+            return code, balance
+        except Exception:
+            return response
 
     def get_statement(self, period: int, limit: int) -> Tuple[int, Dict[str, Any]]:
         try:
