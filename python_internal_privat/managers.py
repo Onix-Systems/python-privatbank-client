@@ -198,8 +198,8 @@ class PrivatManager:
             return response.status_code, response.json()  
         except requests.exceptions.HTTPError as exc:
             error_response = {
-                "detail": str(exc),
                 "code": response.status_code,
+                "detail": str(exc)
             }
             return error_response
         except Exception as exc:
@@ -214,16 +214,16 @@ class PrivatManager:
             token = self._token
             iban = self._iban
             date = self.__date(0)
-            uri_body = self._privat_balance_uri_body
             balance_uri = self._privat_balance_uri
+            uri_body = self._privat_balance_uri_body
             uri = uri_body.format(balance_uri, iban, date)
             headers = {"token": token}
             response = session.get(uri, headers=headers)
             return response.status_code, response.json()
         except requests.exceptions.HTTPError as exc:
             error_response = {
-                "detail": str(exc),
                 "code": response.status_code,
+                "detail": str(exc)
             }
             return error_response
         except Exception as exc:
@@ -234,17 +234,18 @@ class PrivatManager:
 
     def get_balance(self) -> Tuple[int, Dict[str, Any]]:
         try:
-            _status_code, payload = self.get_client_info()
-            balance = {
-                    "balance": payload["balances"][0]["balanceOutEq"]
-                } 
-            return _status_code, balance
-        except requests.exceptions.HTTPError as exc:
-            error_response = {
-                "detail": str(exc),
-                "code": _status_code,
-            }
-            return error_response
+            payload = self.get_client_info()
+            if payload[0] == 200:
+                balance = {
+                    "balance": payload[1]["balances"][0]["balanceOutEq"]
+                }
+                return balance
+            else:
+                error_response = {
+                    "code": payload[0],
+                    "detail": payload[1]
+                }
+                return error_response
         except Exception as exc:
             exception = {
                 "detail": str(exc)
@@ -257,16 +258,16 @@ class PrivatManager:
             token = self._token
             iban = self._iban
             date = self.__date(period)
-            uri_body = self._privat_statement_uri_body
             statement_uri = self._privat_statement_uri
+            uri_body = self._privat_statement_uri_body
             uri = uri_body.format(statement_uri, iban, date, limit)
             headers = {"token": token}
             response = session.get(uri, headers=headers)
             return response.status_code, response.json()
         except requests.exceptions.HTTPError as exc:
             error_response = {
-                "detail": str(exc),
                 "code": response.status_code,
+                "detail": str(exc)
             }
             return error_response
         except Exception as exc:
@@ -288,8 +289,8 @@ class PrivatManager:
             return response.status_code, response.json()
         except requests.exceptions.HTTPError as exc:
             error_response = {
-                "detail": str(exc),
                 "code": response.status_code,
+                "detail": str(exc)
             }
             return error_response
         except Exception as exc:
