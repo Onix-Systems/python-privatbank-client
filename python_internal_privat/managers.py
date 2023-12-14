@@ -1,7 +1,7 @@
 import requests
 import json
 from datetime import datetime
-from typing import Any, Dict, Tuple
+from typing import Tuple, Dict
 
 from .config import (
     PRIVATBANK_CURRENCY_CASHE_RATE_URI,
@@ -187,7 +187,7 @@ class PrivatManager:
     def recipient_nceo(self, new_recipient_nceo):
         self._recipient_nceo = new_recipient_nceo
 
-    def get_currency(self, cashe_rate: bool) -> Tuple[int, Dict[str, Any]]:
+    def get_currency(self, cashe_rate: bool) -> Tuple[int, Dict]:
         try:
             session = self._session
             if cashe_rate:
@@ -208,7 +208,7 @@ class PrivatManager:
             }
             return exception                 
 
-    def get_client_info(self) -> Tuple[int, Dict[str, Any]]:
+    def get_client_info(self) -> Tuple[int, Dict]:
         try:
             session = self._session
             token = self._token
@@ -232,7 +232,7 @@ class PrivatManager:
             }
             return exception
 
-    def get_balance(self) -> Tuple[int, Dict[str, Any]]:
+    def get_balance(self) -> Tuple[int, Dict]:
         try:
             response = self.get_client_info()
             code = response[0]
@@ -244,7 +244,7 @@ class PrivatManager:
         except Exception:
             return response
 
-    def get_statement(self, period: int, limit: int) -> Tuple[int, Dict[str, Any]]:
+    def get_statement(self, period: int, limit: int) -> Tuple[int, Dict]:
         try:
             session = self._session
             token = self._token
@@ -268,7 +268,7 @@ class PrivatManager:
             }
             return exception
         
-    def create_payment(self, recipient: str, amount: float) -> Tuple[int, Dict[str, Any]]:
+    def create_payment(self, recipient: str, amount: float) -> Tuple[int, Dict]:
         try:
             session = self._session
             token = self._token
@@ -306,7 +306,7 @@ class PrivatManager:
             }
             return exception
 
-    def __payment_body(self, recipient: str, amount: float, iban: str) -> Tuple[Dict[str, Any]]:
+    def __payment_body(self, recipient: str, amount: float, iban: str) -> Tuple[Dict]:
         try:
             payment_body = {
                 "document_number": self._document_number,
