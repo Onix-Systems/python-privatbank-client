@@ -1,7 +1,7 @@
 import requests
 import json
 from datetime import datetime
-from typing import Tuple, Dict
+from typing import Tuple, List, Dict
 
 from .config import (
     PRIVATBANK_CURRENCY_CASHE_RATE_URI,
@@ -22,14 +22,12 @@ from .config import (
     RECIPIENT_NCEO,
 )
 
+
 class PrivatManager:
 
-    def __init__(self, request, token=None, iban=None):
-        self.request = request
+    def __init__(self, token=None, iban=None):
         self._token = token
         self._iban = iban
-
-    _session = requests.Session()
 
     _privat_balance_uri_body = PRIVATBANK_BALANCE_URI_BODY
     _privat_statement_uri_body = PRIVATBANK_STATEMENT_URI_BODY
@@ -48,8 +46,6 @@ class PrivatManager:
     _recipient_ify = RECIPIENT_IFI
     _recipient_ify_text = RECIPIENT_IFI_TEXT
     _recipient_nceo = RECIPIENT_NCEO
-
-    _day_unix = 86400
 
     @property
     def token(self):
@@ -187,113 +183,15 @@ class PrivatManager:
     def recipient_nceo(self, new_recipient_nceo):
         self._recipient_nceo = new_recipient_nceo
 
-    def get_currency(self, cashe_rate: bool) -> Tuple[int, Dict]:
+    @classmethod
+    def session(cls):
+        return requests.Session()
+    
+    @staticmethod
+    def __date(period: int) -> Tuple[str|Dict]:
+        _day = 86400   # 1 day (UNIX)
         try:
-            session = self._session
-            if cashe_rate:
-                uri = self._privat_currency_cashe_rate_uri
-            else:
-                uri = self._privat_currency_non_cashe_rate_uri
-            response = session.get(uri)
-            return response.status_code, response.json()  
-        except requests.exceptions.HTTPError as exc:
-            error_response = {
-                "code": response.status_code,
-                "detail": str(exc)
-            }
-            return error_response
-        except Exception as exc:
-            exception = {
-                "detail": str(exc)
-            }
-            return exception                 
-
-    def get_client_info(self) -> Tuple[int, Dict]:
-        try:
-            session = self._session
-            token = self._token
-            iban = self._iban
-            date = self.__date(0)
-            balance_uri = self._privat_balance_uri
-            uri_body = self._privat_balance_uri_body
-            uri = uri_body.format(balance_uri, iban, date)
-            headers = {"token": token}
-            response = session.get(uri, headers=headers)
-            return response.status_code, response.json()
-        except requests.exceptions.HTTPError as exc:
-            error_response = {
-                "code": response.status_code,
-                "detail": str(exc)
-            }
-            return error_response
-        except Exception as exc:
-            exception = {
-                "detail": str(exc)
-            }
-            return exception
-
-    def get_balance(self) -> Tuple[int, Dict]:
-        try:
-            response = self.get_client_info()
-            code = response[0]
-            payload = response[1]
-            balance = {
-                "balance": payload["balances"][0]["balanceOutEq"]
-            }
-            return code, balance
-        except Exception:
-            return response
-
-    def get_statement(self, period: int, limit: int) -> Tuple[int, Dict]:
-        try:
-            session = self._session
-            token = self._token
-            iban = self._iban
-            date = self.__date(period)
-            statement_uri = self._privat_statement_uri
-            uri_body = self._privat_statement_uri_body
-            uri = uri_body.format(statement_uri, iban, date, limit)
-            headers = {"token": token}
-            response = session.get(uri, headers=headers)
-            return response.status_code, response.json()
-        except requests.exceptions.HTTPError as exc:
-            error_response = {
-                "code": response.status_code,
-                "detail": str(exc)
-            }
-            return error_response
-        except Exception as exc:
-            exception = {
-                "detail": str(exc)
-            }
-            return exception
-        
-    def create_payment(self, recipient: str, amount: float) -> Tuple[int, Dict]:
-        try:
-            session = self._session
-            token = self._token
-            iban = self._iban
-            payment_body = self.__payment_body(recipient, amount, iban)
-            data = json.dumps(payment_body)
-            headers = {"token": token}
-            uri = self._privat_payment_uri
-            response = session.post(uri, headers=headers, data=data)
-            return response.status_code, response.json()
-        except requests.exceptions.HTTPError as exc:
-            error_response = {
-                "code": response.status_code,
-                "detail": str(exc)
-            }
-            return error_response
-        except Exception as exc:
-            exception = {
-                "detail": str(exc)
-            }
-            return exception
-        
-    def __date(self, period: int) -> str:
-        try:
-            time_delta = int(datetime.now().timestamp()) - (period * self._day_unix)
+            time_delta = int(datetime.now().timestamp()) - (period * _day)
             dt_object = datetime.fromtimestamp(time_delta)
             year = dt_object.strftime("%Y")
             month = dt_object.strftime("%m")
@@ -306,6 +204,116 @@ class PrivatManager:
             }
             return exception
 
+    def get_currency(self, cashe_rate: bool) -> Tuple[Dict|List[Dict]]:
+        try:
+            session = self.session()
+            if cashe_rate:
+                uri = self._privat_currency_cashe_rate_uri
+            else:
+                uri = self._privat_currency_non_cashe_rate_uri
+            response = session.get(uri)
+            code = response.status_code
+            response.raise_for_status()
+            return response.json()  
+        except requests.exceptions.HTTPError as exc:
+            error_response = {
+                "code": code,
+                "detail": str(exc)
+            }
+            return error_response
+        except Exception as exc:
+            exception = {
+                "detail": str(exc)
+            }
+            return exception                 
+
+    def get_client_info(self) -> Tuple[Dict|List[Dict]]:
+        try:
+            session = self.session()
+            token = self.token
+            iban = self.iban
+            date = self.__date(0)
+            balance_uri = self.privat_balance_uri
+            uri_body = self.privat_balance_uri_body
+            uri = uri_body.format(balance_uri, iban, date)
+            headers = {"token": token}
+            response = session.get(uri, headers=headers)
+            code = response.status_code
+            response.raise_for_status()
+            return response.json()  
+        except requests.exceptions.HTTPError as exc:
+            error_response = {
+                "code": code,
+                "detail": str(exc)
+            }
+            return error_response
+        except Exception as exc:
+            exception = {
+                "detail": str(exc)
+            }
+            return exception
+
+    def get_balance(self) -> Tuple[Dict|List[Dict]]:
+        try:
+            response = self.get_client_info()
+            balance = {
+                "balance": response["balances"][0]["balanceOutEq"]
+            }
+            return balance
+        except Exception:
+            return response
+        
+    def get_statement(self, period: int, limit: int) -> Tuple[Dict|List[Dict]]:
+        try:
+            session = self.session()
+            token = self.token
+            iban = self.iban
+            statement_uri = self.privat_statement_uri
+            uri_body = self.privat_statement_uri_body
+            date = self.__date(period)
+            uri = uri_body.format(statement_uri, iban, date, limit)
+            headers = {"token": token}
+            response = session.get(uri, headers=headers)
+            code = response.status_code
+            response.raise_for_status()
+            return response.json()  
+        except requests.exceptions.HTTPError as exc:
+            error_response = {
+                "code": code,
+                "detail": str(exc)
+            }
+            return error_response
+        except Exception as exc:
+            exception = {
+                "detail": str(exc)
+            }
+            return exception
+        
+    def create_payment(self, recipient: str, amount: float) -> Tuple[Dict|List[Dict]]:
+        try:
+            session = self.session()
+            token = self.token
+            iban = self.iban
+            payment_body = self.__payment_body(recipient, amount, iban)
+            data = json.dumps(payment_body)
+            headers = {"token": token}
+            uri = self.privat_payment_uri
+            response = session.post(uri, headers=headers, data=data)
+            code = response.status_code
+            response.raise_for_status()
+            return response.json() 
+        except requests.exceptions.HTTPError as exc:
+            error_response = {
+                "code": code,
+                "detail": str(exc)
+            }
+            return error_response
+        except Exception as exc:
+            exception = {
+                "detail": str(exc)
+            }
+            return exception
+    
     def __payment_body(self, recipient: str, amount: float, iban: str) -> Tuple[Dict]:
         try:
             payment_body = {

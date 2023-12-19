@@ -4,6 +4,9 @@ import os
 load_dotenv()
 
 
+PRIVATBANK_BALANCE_URI_BODY='{0}?acc={1}&startDate={2}'
+PRIVATBANK_STATEMENT_URI_BODY='{0}?acc={1}&startDate={2}&limit={3}'
+
 PRIVATBANK_BALANCE_URI = os.getenv(
     'PRIVATBANK_BALANCE_URI', 'https://acp.privatbank.ua/api/statements/balance',
 ) 
@@ -22,14 +25,27 @@ PRIVATBANK_CURRENCY_NON_CASHE_RATE_URI = os.getenv(
     'PRIVATBANK_CURRENCY_NON_CASHE_RATE_URI', 'https://api.privatbank.ua/p24api/pubinfo?exchange&coursid=11'
 )
 
-PRIVATBANK_BALANCE_URI_BODY='{0}?acc={1}&startDate={2}'
-PRIVATBANK_STATEMENT_URI_BODY='{0}?acc={1}&startDate={2}&limit={3}'
-
-DOCUMENT_NUMBER="autoclient"
-RECIPIENT_NCEO="14360570"
-PAYMENT_NAMING="ПАО, ПАО КБ ПРИВАТБАНК"
-RECIPIENT_IFI="305299"
-RECIPIENT_IFI_TEXT="ПАТ КБ \"ПРИВАТБАНК\""
-PAYMENT_DESTINATION="test create pmnt to rest API"
-PAYMENT_CCY="UAH"
-DOCUMENT_TYPE="cr"
+DOCUMENT_NUMBER = os.getenv(
+    'DOCUMENT_NUMBER', 'autoclient'
+)
+RECIPIENT_NCEO = os.getenv(
+    'RECIPIENT_NCEO', '14360570'
+)
+PAYMENT_NAMING = os.getenv(
+    'PAYMENT_NAMING', 'ПАО, ПАО КБ ПРИВАТБАНК'
+)
+RECIPIENT_IFI = os.getenv(
+    'RECIPIENT_IFI', '305299'
+)
+RECIPIENT_IFI_TEXT = os.getenv(
+    'RECIPIENT_IFI_TEXT', 'ПАТ КБ \"ПРИВАТБАНК\"'
+)
+PAYMENT_DESTINATION = os.getenv(
+    'PAYMENT_DESTINATION', 'test create pmnt to rest API'
+)
+PAYMENT_CCY = os.getenv(
+    'PAYMENT_CCY', 'UAH'
+)
+DOCUMENT_TYPE = os.getenv(
+    'DOCUMENT_TYPE', 'cr'
+)
