@@ -1,4 +1,4 @@
-# python-internal-privat
+## python-internal-privat
 This module is designed for quick interaction with the privatbank API.
 
 ## Name
@@ -129,7 +129,7 @@ Get statement
   {
     "status": "SUCCESS",
     "type": "transactions",
-    "exist_next_page": false,
+    "exist_next_page": 'false',
     "next_page_id": "2988607044_online",
     "transactions": [
       {

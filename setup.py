@@ -2,13 +2,13 @@ from setuptools import setup, find_packages
 
 
 def readme():
-    with open("README.md", "r") as f:
+    with open("README.md", "r", encoding='utf-8') as f:
         return f.read()
 
 
 setup(
     name="python_internal_privat",
-    version="0.0.7",
+    version="1.0.0",
     author="ihor.sotnyk",
     author_email="ihor.sotnyk@onix-systems.com",
     description="This module is designed for quick interaction with the privatbank API.",
