@@ -20,13 +20,13 @@ PRIVATBANK_PAYMENT_URI = os.getenv(
     "https://acp.privatbank.ua/api/proxy/payment/create_pred",
 )
 # PrivatBank cash rate (in branches)
-PRIVATBANK_CURRENCY_CASHE_RATE_URI = os.getenv(
-    "PRIVATBANK_CURRENCY_CASHE_RATE_URI",
+PRIVATBANK_CURRENCIES_CASHE_RATE_URI = os.getenv(
+    "PRIVATBANK_CURRENCIES_CASHE_RATE_URI",
     "https://api.privatbank.ua/p24api/pubinfo?exchange&coursid=5",
 )
 # Non-cash rate of PrivatBank (conversion by cards, Privat24, replenishment of deposits)
-PRIVATBANK_CURRENCY_NON_CASHE_RATE_URI = os.getenv(
-    "PRIVATBANK_CURRENCY_NON_CASHE_RATE_URI",
+PRIVATBANK_CURRENCIES_NON_CASHE_RATE_URI = os.getenv(
+    "PRIVATBANK_CURRENCIES_NON_CASHE_RATE_URI",
     "https://api.privatbank.ua/p24api/pubinfo?exchange&coursid=11",
 )
 

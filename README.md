@@ -5,9 +5,9 @@ This module is designed for quick interaction with the privatbank API.
 python-internal-privat
 
 ## Installation
-This framework is published at the TestPyPI, install it with pip:
+This framework is published at the PyPI, install it with pip:
 
-    py -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ python-internal-privat
+    pip install python-internal-privat
 
 ## Usage
 1. First, install the "Autoclient" module of the "Privat24 for Business" complex designed to serve corporate clients and private entrepreneurs."Autoclient" is software that allows you to set up periodic automatic receipt of statements / account balances and import payments into Privat24.
@@ -23,8 +23,9 @@ This framework is published at the TestPyPI, install it with pip:
 
 ## Methods
 Get currencies (cashe rate)
+PrivatBank cash rate in branches
 ```python
->>> mng.get_currency(cashe_rate=True)
+>>> mng.get_currencies(cashe_rate=True)
 {
   "code": 200,  
   [
@@ -46,7 +47,7 @@ Get currencies (cashe rate)
 ```
 
 Get currencies (non cashe rate)
-
+Non-cash rate of PrivatBank conversion by cards, Privat24, replenishment of deposits
 ```python
 >>> mng.get_currency(cashe_rate=False)
 {
