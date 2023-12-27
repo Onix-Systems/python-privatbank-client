@@ -62,20 +62,20 @@ class PrivatManager:
         self._iban = new_iban
 
     @property
-    def privat_currency_cashe_rate_uri(self) -> str:
-        return self._privat_currency_cashe_rate_uri
+    def privat_currencies_cashe_rate_uri(self) -> str:
+        return self._privat_currencies_cashe_rate_uri
 
-    @privat_currency_cashe_rate_uri.setter
-    def privat_currency_cashe_rate_uri(self, new_uri: str):
-        self._privat_currency_cashe_rate_uri = new_uri
+    @privat_currencies_cashe_rate_uri.setter
+    def privat_currencies_cashe_rate_uri(self, new_uri: str):
+        self._privat_currencies_cashe_rate_uri = new_uri
 
     @property
-    def privat_currency_non_cashe_rate_uri(self) -> str:
-        return self._privat_currency_non_cashe_rate_uri
+    def privat_currencies_non_cashe_rate_uri(self) -> str:
+        return self._privat_currencies_non_cashe_rate_uri
 
-    @privat_currency_non_cashe_rate_uri.setter
-    def privat_currency_non_cashe_rate_uri(self, new_uri: str):
-        self._privat_currency_non_cashe_rate_uri = new_uri
+    @privat_currencies_non_cashe_rate_uri.setter
+    def privat_currencies_non_cashe_rate_uri(self, new_uri: str):
+        self._privat_currencies_non_cashe_rate_uri = new_uri
 
     @property
     def privat_balance_uri(self) -> str:
@@ -205,9 +205,9 @@ class PrivatManager:
         try:
             session = self.session()
             if cashe_rate:
-                uri = self._privat_currency_cashe_rate_uri
+                uri = self.privat_currencies_cashe_rate_uri
             else:
-                uri = self._privat_currency_non_cashe_rate_uri
+                uri = self.privat_currencies_non_cashe_rate_uri
             response = session.get(uri)
             code = response.status_code
             response.raise_for_status()
@@ -274,6 +274,26 @@ class PrivatManager:
             exception = {"detail": str(exc)}
             return exception
 
+    def __payment_body(self, recipient: str, amount: float, iban: str) -> Dict:
+        try:
+            payment_body = {
+                "document_number": self._document_number,
+                "recipient_card": recipient,
+                "recipient_nceo": self._recipient_nceo,
+                "payment_naming": self._payment_naming,
+                "payment_amount": amount,
+                "recipient_ifi": self._recipient_ify,
+                "recipient_ifi_text": self._recipient_ify_text,
+                "payment_destination": self._payment_destination,
+                "payer_account": iban,
+                "payment_ccy": self._payment_ccy,
+                "document_type": self._document_type,
+            }
+            return payment_body
+        except Exception as exc:
+            exception = {"detail": str(exc)}
+            return exception
+
     def create_payment(self, recipient: str, amount: float) -> Dict:
         try:
             session = self.session()
@@ -291,26 +311,6 @@ class PrivatManager:
         except requests.exceptions.HTTPError as exc:
             error_response = {"code": code, "detail": str(exc)}
             return error_response
-        except Exception as exc:
-            exception = {"detail": str(exc)}
-            return exception
-
-    def __payment_body(self, recipient: str, amount: float, iban: str) -> Dict:
-        try:
-            payment_body = {
-                "document_number": self._document_number,
-                "recipient_card": recipient,
-                "recipient_nceo": self._recipient_nceo,
-                "payment_naming": self._payment_naming,
-                "payment_amount": amount,
-                "recipient_ifi": self._recipient_ify,
-                "recipient_ifi_text": self._recipient_ify_text,
-                "payment_destination": self._payment_destination,
-                "payer_account": iban,
-                "payment_ccy": self._payment_ccy,
-                "document_type": self._document_type,
-            }
-            return payment_body
         except Exception as exc:
             exception = {"detail": str(exc)}
             return exception
