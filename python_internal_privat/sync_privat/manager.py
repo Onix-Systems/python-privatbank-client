@@ -9,18 +9,19 @@ class SyncPrivatManager(BasePrivatManager):
     def session(cls) -> requests.sessions.Session:
         return requests.Session()
 
-    def get_currencies(self, cashe_rate: bool) -> Dict:
+    def sync_request(
+        self, uri: str, headers: Dict | None, data: Dict | None, method: str
+    ) -> Dict:
+        session = self.session()
+        if method == "GET":
+            response = session.get(uri, headers=headers)
+        if method == "POST":
+            response = session.post(uri, headers=headers, data=data)
         try:
-            session = self.session()
-            if cashe_rate:
-                uri = self.privat_currencies_cashe_rate_uri
-            else:
-                uri = self.privat_currencies_non_cashe_rate_uri
-            response = session.get(uri)
             code = response.status_code
             response.raise_for_status()
-            payload = {"code": code, "detail": response.json()}
-            return payload
+            response = {"code": code, "detail": response.json()}
+            return response
         except requests.exceptions.HTTPError as exc:
             error_response = {"code": code, "detail": str(exc)}
             return error_response
@@ -28,9 +29,20 @@ class SyncPrivatManager(BasePrivatManager):
             exception = {"detail": str(exc)}
             return exception
 
+    def get_currencies(self, cashe_rate: bool) -> Dict:
+        try:
+            if cashe_rate:
+                uri = self.privat_currencies_cashe_rate_uri
+            else:
+                uri = self.privat_currencies_non_cashe_rate_uri
+            response = self.sync_request(uri=uri, headers=None, data=None, method="GET")
+            return response
+        except Exception as exc:
+            exception = {"detail": str(exc)}
+            return exception
+
     def get_client_info(self) -> Dict:
         try:
-            session = self.session()
             token = self.token
             iban = self.iban
             date = self.date(0).get("date")
@@ -38,14 +50,10 @@ class SyncPrivatManager(BasePrivatManager):
             uri_body = self.privat_balance_uri_body
             uri = uri_body.format(balance_uri, iban, date)
             headers = {"token": token}
-            response = session.get(uri, headers=headers)
-            code = response.status_code
-            response.raise_for_status()
-            payload = {"code": code, "detail": response.json()}
-            return payload
-        except requests.exceptions.HTTPError as exc:
-            error_response = {"code": code, "detail": str(exc)}
-            return error_response
+            response = self.sync_request(
+                uri=uri, headers=headers, data=None, method="GET"
+            )
+            return response
         except Exception as exc:
             exception = {"detail": str(exc)}
             return exception
@@ -62,7 +70,6 @@ class SyncPrivatManager(BasePrivatManager):
 
     def get_statement(self, period: int, limit: int) -> Dict:
         try:
-            session = self.session()
             token = self.token
             iban = self.iban
             statement_uri = self.privat_statement_uri
@@ -70,35 +77,26 @@ class SyncPrivatManager(BasePrivatManager):
             date = self.date(period).get("date")
             uri = uri_body.format(statement_uri, iban, date, limit)
             headers = {"token": token}
-            response = session.get(uri, headers=headers)
-            code = response.status_code
-            response.raise_for_status()
-            payload = {"code": code, "detail": response.json()}
-            return payload
-        except requests.exceptions.HTTPError as exc:
-            error_response = {"code": code, "detail": str(exc)}
-            return error_response
+            response = self.sync_request(
+                uri=uri, headers=headers, data=None, method="GET"
+            )
+            return response
         except Exception as exc:
             exception = {"detail": str(exc)}
             return exception
 
     def create_payment(self, recipient: str, amount: float) -> Dict:
         try:
-            session = self.session()
             token = self.token
             iban = self.iban
             payment_body = self.payment_body(recipient, amount, iban)
-            data = json.dumps(payment_body)
-            headers = {"token": token}
             uri = self.privat_payment_uri
-            response = session.post(uri, headers=headers, data=data)
-            code = response.status_code
-            response.raise_for_status()
-            payload = {"code": code, "detail": response.json()}
-            return payload
-        except requests.exceptions.HTTPError as exc:
-            error_response = {"code": code, "detail": str(exc)}
-            return error_response
+            headers = {"token": token}
+            data = json.dumps(payment_body)
+            response = self.sync_request(
+                uri=uri, headers=headers, data=data, method="POST"
+            )
+            return response
         except Exception as exc:
             exception = {"detail": str(exc)}
             return exception
