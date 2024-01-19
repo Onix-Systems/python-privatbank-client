@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup, find_namespace_packages
 
 
 def readme():
@@ -8,15 +8,33 @@ def readme():
 
 setup(
     name="python_internal_privat",
-    version="1.0.1",
+    version="1.0.2",
     author="ihor.sotnyk",
     author_email="ihor.sotnyk@onix-systems.com",
     description="This module is designed for quick interaction with the privatbank API.",
     long_description=readme(),
     long_description_content_type="text/markdown",
     url="https://gitlab.onix.ua/onix-systems/python-internal-privat",
-    packages=find_packages(),
-    install_requires=["requests>=2.25.1", "python-dotenv==1.0.0"],
+    packages=find_namespace_packages(where="python_internal_privat"),
+    package_dir={"": "python_internal_privat"},
+    package_data={
+        "privat_config": ["*.py"],
+        "async_privat": ["*.py"],
+        "sync_privat": ["*.py"],
+        "drf_privat": ["*.py"],
+    },
+    install_requires=["python-dotenv==1.0.0"],
+    extras_require={
+        "http": ["requests>=2.25.1"],
+        "aio": ["aiohttp==3.9.1"],
+        "drf": ["Django>=4,<5", "djangorestframework", "requests>=2.25.1"],
+        "all": [
+            "Django>=4,<5",
+            "djangorestframework",
+            "requests>=2.25.1",
+            "aiohttp==3.9.1",
+        ],
+    },
     classifiers=[
         "Programming Language :: Python :: 3.11",
         "License :: OSI Approved :: MIT License",

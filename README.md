@@ -7,7 +7,35 @@ python-internal-privat
 ## Installation
 This framework is published at the PyPI, install it with pip:
 
-    pip install python-internal-privat
+  1.This package makes it possible to use module methods in synchronous frameworks:
+
+    pip install python-internal-privat[http]
+
+  2.This package makes it possible to use module methods in asynchronous frameworks:
+
+    pip install python-internal-privat[aio]
+
+  3.This package makes it possible to use ready-made views with a synchronous script based on the Django Rest framework:
+
+    pip install python-internal-privat[drf]
+
+  To get started, add the following packages to INSTALLED_APPS:
+
+    INSTALLED_APPS = [
+        ...
+        'rest_framework',
+        'drf_privat',
+    ]
+
+  Include drf_mono urls to your urls.py:
+
+      urlpatterns = [
+          ...
+          path('privat/', include('drf_privat.urls', namespace='drf_privat')),
+      ]
+  4.To install all packages at once:
+
+    pip install python-internal-privat[all]
 
 ## Usage
 1. First, install the "Autoclient" module of the "Privat24 for Business" complex designed to serve corporate clients and private entrepreneurs."Autoclient" is software that allows you to set up periodic automatic receipt of statements / account balances and import payments into Privat24.

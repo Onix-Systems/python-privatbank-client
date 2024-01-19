@@ -1,4 +1,3 @@
-import json
 import requests
 from typing import Dict
 from datetime import datetime
@@ -22,7 +21,7 @@ from .config import (
 )
 
 
-class PrivatManager:
+class BasePrivatManager:
     def __init__(self, token=None, iban=None):
         self._token = token
         self._iban = iban
@@ -186,7 +185,7 @@ class PrivatManager:
         return requests.Session()
 
     @staticmethod
-    def __date(period: int) -> Dict:
+    def date(period: int) -> Dict:
         _day = 86400  # 1 day (UNIX)
         try:
             time_delta = int(datetime.now().timestamp()) - (period * _day)
@@ -201,116 +200,22 @@ class PrivatManager:
             exception = {"detail": str(exc)}
             return exception
 
-    def get_currencies(self, cashe_rate: bool) -> Dict:
-        try:
-            session = self.session()
-            if cashe_rate:
-                uri = self.privat_currencies_cashe_rate_uri
-            else:
-                uri = self.privat_currencies_non_cashe_rate_uri
-            response = session.get(uri)
-            code = response.status_code
-            response.raise_for_status()
-            payload = {"code": code, "detail": response.json()}
-            return payload
-        except requests.exceptions.HTTPError as exc:
-            error_response = {"code": code, "detail": str(exc)}
-            return error_response
-        except Exception as exc:
-            exception = {"detail": str(exc)}
-            return exception
-
-    def get_client_info(self) -> Dict:
-        try:
-            session = self.session()
-            token = self.token
-            iban = self.iban
-            date = self.__date(0).get("date")
-            balance_uri = self.privat_balance_uri
-            uri_body = self.privat_balance_uri_body
-            uri = uri_body.format(balance_uri, iban, date)
-            headers = {"token": token}
-            response = session.get(uri, headers=headers)
-            code = response.status_code
-            response.raise_for_status()
-            payload = {"code": code, "detail": response.json()}
-            return payload
-        except requests.exceptions.HTTPError as exc:
-            error_response = {"code": code, "detail": str(exc)}
-            return error_response
-        except Exception as exc:
-            exception = {"detail": str(exc)}
-            return exception
-
-    def get_balance(self) -> Dict:
-        try:
-            client_info = self.get_client_info()
-            code = client_info.get("code")
-            payload = client_info.get("detail")
-            balance = {"code": code, "balance": payload["balances"][0]["balanceOutEq"]}
-            return balance
-        except Exception:
-            return client_info
-
-    def get_statement(self, period: int, limit: int) -> Dict:
-        try:
-            session = self.session()
-            token = self.token
-            iban = self.iban
-            statement_uri = self.privat_statement_uri
-            uri_body = self.privat_statement_uri_body
-            date = self.__date(period).get("date")
-            uri = uri_body.format(statement_uri, iban, date, limit)
-            headers = {"token": token}
-            response = session.get(uri, headers=headers)
-            code = response.status_code
-            response.raise_for_status()
-            payload = {"code": code, "detail": response.json()}
-            return payload
-        except requests.exceptions.HTTPError as exc:
-            error_response = {"code": code, "detail": str(exc)}
-            return error_response
-        except Exception as exc:
-            exception = {"detail": str(exc)}
-            return exception
-
-    def __payment_body(self, recipient: str, amount: float, iban: str) -> Dict:
+    def payment_body(self, recipient: str, amount: float, iban: str) -> Dict:
         try:
             payment_body = {
-                "document_number": self._document_number,
+                "document_number": self.document_number,
                 "recipient_card": recipient,
-                "recipient_nceo": self._recipient_nceo,
-                "payment_naming": self._payment_naming,
+                "recipient_nceo": self.recipient_nceo,
+                "payment_naming": self.payment_naming,
                 "payment_amount": amount,
-                "recipient_ifi": self._recipient_ify,
-                "recipient_ifi_text": self._recipient_ify_text,
-                "payment_destination": self._payment_destination,
+                "recipient_ifi": self.recipient_ify,
+                "recipient_ifi_text": self.recipient_ify_text,
+                "payment_destination": self.payment_destination,
                 "payer_account": iban,
-                "payment_ccy": self._payment_ccy,
-                "document_type": self._document_type,
+                "payment_ccy": self.payment_ccy,
+                "document_type": self.document_type,
             }
             return payment_body
-        except Exception as exc:
-            exception = {"detail": str(exc)}
-            return exception
-
-    def create_payment(self, recipient: str, amount: float) -> Dict:
-        try:
-            session = self.session()
-            token = self.token
-            iban = self.iban
-            payment_body = self.__payment_body(recipient, amount, iban)
-            data = json.dumps(payment_body)
-            headers = {"token": token}
-            uri = self.privat_payment_uri
-            response = session.post(uri, headers=headers, data=data)
-            code = response.status_code
-            response.raise_for_status()
-            payload = {"code": code, "detail": response.json()}
-            return payload
-        except requests.exceptions.HTTPError as exc:
-            error_response = {"code": code, "detail": str(exc)}
-            return error_response
         except Exception as exc:
             exception = {"detail": str(exc)}
             return exception
