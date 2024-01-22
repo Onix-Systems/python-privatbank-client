@@ -49,7 +49,7 @@ This framework is published at the PyPI, install it with pip:
 
     mng = SyncPrivatManager(token, iban)
 
-3. For a synchronous request use this token and your account's iban to initialize client:
+3. For a asynchronous request use this token and your account's iban to initialize client:
 
     from async_privat.manager import AsyncPrivatManager
 
