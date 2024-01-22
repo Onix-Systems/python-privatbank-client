@@ -40,14 +40,23 @@ This framework is published at the PyPI, install it with pip:
 ## Usage
 1. First, install the "Autoclient" module of the "Privat24 for Business" complex designed to serve corporate clients and private entrepreneurs."Autoclient" is software that allows you to set up periodic automatic receipt of statements / account balances and import payments into Privat24.
 2. Then use this token to obtain personal data of a privatbank client.
-3. Finally, use this token and your account's iban to initialize client:
+3. For a synchronous request use this token and your account's iban to initialize client:
 
-    from python_internal_privat.managers import PrivatManager
+    from sync_privat.manager import SyncPrivatManager
 
     token = "xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
     iban = "UAxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
-    mng = PrivatManager(token, iban)
+    mng = SyncPrivatManager(token, iban)
+
+3. For a synchronous request use this token and your account's iban to initialize client:
+
+    from async_privat.manager import AsyncPrivatManager
+
+    token = "xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    iban = "UAxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+    mng = AsyncPrivatManager(token, iban)
 
 ## Methods
 Get currencies (cashe rate)
