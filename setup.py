@@ -8,7 +8,7 @@ def readme():
 
 setup(
     name="python_internal_privat",
-    version="1.0.7",
+    version="1.0.8",
     author="ihor.sotnyk",
     author_email="ihor.sotnyk@onix-systems.com",
     description="This module is designed for quick interaction with the privatbank API.",

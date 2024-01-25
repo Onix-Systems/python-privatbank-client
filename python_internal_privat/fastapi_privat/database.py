@@ -8,9 +8,11 @@ from sqlalchemy.pool import NullPool
 
 load_dotenv()
 
-DATABASE_URI = os.getenv("DATABASE_URI")
+DB_URI = os.getenv("DB_URI", "postgres:postgres@localhost:5432/postgres")
 
-engine = create_async_engine(DATABASE_URI, poolclass=NullPool)
+ASYNC_DATABASE_URI = f"postgresql+asyncpg://{DB_URI}"
+
+engine = create_async_engine(ASYNC_DATABASE_URI, poolclass=NullPool)
 async_session_maker = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
 
