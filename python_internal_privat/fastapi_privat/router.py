@@ -31,7 +31,7 @@ async def change_privatbank(
     schema: PrivatSchemaUpdate,
     session: AsyncSession = Depends(async_session),
 ) -> Dict:
-    try: 
+    try:
         return await crud.update_privat(user_id, schema, session)
     except Exception as exc:
         exception = {"detail": str(exc)}
@@ -121,8 +121,7 @@ async def payment(
         if payload is not None:
             mng.token = payload[0].privat_token
             mng.iban = payload[0].privat_iban
-            response = await mng.create_payment(schema.recipient, schema.amount)
-            return response
+            return await mng.create_payment(schema.recipient, schema.amount)
         return mng.does_not_exsists_exception()
     except Exception as exc:
         exception = {"detail": str(exc)}
