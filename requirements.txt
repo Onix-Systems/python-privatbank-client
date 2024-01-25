@@ -3,3 +3,8 @@ python-dotenv==1.0.0
 aiohttp==3.9.1
 Django>=4,<5
 djangorestframework
+fastapi[all]
+psycopg2
+sqlalchemy
+asyncpg
+alembic

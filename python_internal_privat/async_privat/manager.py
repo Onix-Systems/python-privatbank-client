@@ -10,7 +10,7 @@ class AsyncPrivatManager(BasePrivatManager):
         return aiohttp.ClientSession()
 
     async def async_request(
-        self, uri: str, headers: Dict | None, data: Dict | None, method: str
+        self, method: str, uri: str, headers=None, data=None
     ) -> Dict:
         session = await self.session()
         if method == "GET":
@@ -36,9 +36,7 @@ class AsyncPrivatManager(BasePrivatManager):
                 uri = self.privat_currencies_cashe_rate_uri
             else:
                 uri = self.privat_currencies_non_cashe_rate_uri
-            response = await self.async_request(
-                uri=uri, headers=None, data=None, method="GET"
-            )
+            response = await self.async_request(method="GET", uri=uri)
             return response
         except Exception as exc:
             exception = {"detail": str(exc)}
@@ -53,9 +51,7 @@ class AsyncPrivatManager(BasePrivatManager):
             uri_body = self.privat_balance_uri_body
             uri = uri_body.format(balance_uri, iban, date)
             headers = {"token": token}
-            response = await self.async_request(
-                uri=uri, headers=headers, data=None, method="GET"
-            )
+            response = await self.async_request(method="GET", uri=uri, headers=headers)
             return response
         except Exception as exc:
             exception = {"detail": str(exc)}
@@ -80,9 +76,7 @@ class AsyncPrivatManager(BasePrivatManager):
             date = self.date(period).get("date")
             uri = uri_body.format(statement_uri, iban, date, limit)
             headers = {"token": token}
-            response = await self.async_request(
-                uri=uri, headers=headers, data=None, method="GET"
-            )
+            response = await self.async_request(method="GET", uri=uri, headers=headers)
             return response
         except Exception as exc:
             exception = {"detail": str(exc)}
@@ -97,7 +91,7 @@ class AsyncPrivatManager(BasePrivatManager):
             headers = {"token": token}
             uri = self.privat_payment_uri
             response = await self.async_request(
-                uri=uri, headers=headers, data=data, method="POST"
+                method="POST", uri=uri, headers=headers, data=data
             )
             return response
         except Exception as exc:

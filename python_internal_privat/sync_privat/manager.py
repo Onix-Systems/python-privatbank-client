@@ -10,7 +10,11 @@ class SyncPrivatManager(BasePrivatManager):
         return requests.Session()
 
     def sync_request(
-        self, uri: str, headers: Dict | None, data: Dict | None, method: str
+        self,
+        method: str,
+        uri: str,
+        headers=None,
+        data=None,
     ) -> Dict:
         session = self.session()
         if method == "GET":
@@ -35,7 +39,7 @@ class SyncPrivatManager(BasePrivatManager):
                 uri = self.privat_currencies_cashe_rate_uri
             else:
                 uri = self.privat_currencies_non_cashe_rate_uri
-            response = self.sync_request(uri=uri, headers=None, data=None, method="GET")
+            response = self.sync_request(method="GET", uri=uri)
             return response
         except Exception as exc:
             exception = {"detail": str(exc)}
@@ -50,9 +54,7 @@ class SyncPrivatManager(BasePrivatManager):
             uri_body = self.privat_balance_uri_body
             uri = uri_body.format(balance_uri, iban, date)
             headers = {"token": token}
-            response = self.sync_request(
-                uri=uri, headers=headers, data=None, method="GET"
-            )
+            response = self.sync_request(method="GET", uri=uri, headers=headers)
             return response
         except Exception as exc:
             exception = {"detail": str(exc)}
@@ -77,9 +79,7 @@ class SyncPrivatManager(BasePrivatManager):
             date = self.date(period).get("date")
             uri = uri_body.format(statement_uri, iban, date, limit)
             headers = {"token": token}
-            response = self.sync_request(
-                uri=uri, headers=headers, data=None, method="GET"
-            )
+            response = self.sync_request(method="GET", uri=uri, headers=headers)
             return response
         except Exception as exc:
             exception = {"detail": str(exc)}
@@ -94,7 +94,7 @@ class SyncPrivatManager(BasePrivatManager):
             headers = {"token": token}
             data = json.dumps(payment_body)
             response = self.sync_request(
-                uri=uri, headers=headers, data=data, method="POST"
+                method="POST", uri=uri, headers=headers, data=data
             )
             return response
         except Exception as exc:

@@ -1,7 +1,5 @@
-import requests
 from typing import Dict
 from datetime import datetime
-
 from .config import (
     PRIVATBANK_CURRENCIES_CASHE_RATE_URI,
     PRIVATBANK_CURRENCIES_NON_CASHE_RATE_URI,
@@ -18,6 +16,16 @@ from .config import (
     RECIPIENT_IFI,
     RECIPIENT_IFI_TEXT,
     RECIPIENT_NCEO,
+    PRIVAT_CREATE_SUCCESS_CODE,
+    PRIVAT_CREATE_SUCCESS_DETAIL,
+    PRIVAT_UPDATE_SUCCESS_CODE,
+    PRIVAT_UPDATE_SUCCESS_DETAIL,
+    PRIVAT_DELETE_SUCCESS_CODE,
+    PRIVAT_DELETE_SUCCESS_DETAIL,
+    PRIVAT_EXISTS_EXCEPTION_CODE,
+    PRIVAT_EXISTS_EXCEPTION_DETAIL,
+    PRIVAT_DOES_NOT_EXISTS_EXCEPTION_CODE,
+    PRIVAT_DOES_NOT_EXISTS_EXCEPTION_DETAIL,
 )
 
 
@@ -28,13 +36,11 @@ class BasePrivatManager:
 
     _privat_balance_uri_body = PRIVATBANK_BALANCE_URI_BODY
     _privat_statement_uri_body = PRIVATBANK_STATEMENT_URI_BODY
-
     _privat_currencies_cashe_rate_uri = PRIVATBANK_CURRENCIES_CASHE_RATE_URI
     _privat_currencies_non_cashe_rate_uri = PRIVATBANK_CURRENCIES_NON_CASHE_RATE_URI
     _privat_balance_uri = PRIVATBANK_BALANCE_URI
     _privat_statement_uri = PRIVATBANK_STATEMENT_URI
     _privat_payment_uri = PRIVATBANK_PAYMENT_URI
-
     _document_number = DOCUMENT_NUMBER
     _document_type = DOCUMENT_TYPE
     _payment_ccy = PAYMENT_CCY
@@ -43,6 +49,16 @@ class BasePrivatManager:
     _recipient_ify = RECIPIENT_IFI
     _recipient_ify_text = RECIPIENT_IFI_TEXT
     _recipient_nceo = RECIPIENT_NCEO
+    _privat_create_success_code = PRIVAT_CREATE_SUCCESS_CODE
+    _privat_create_success_detail = PRIVAT_CREATE_SUCCESS_DETAIL
+    _privat_update_success_code = PRIVAT_UPDATE_SUCCESS_CODE
+    _privat_update_success_detail = PRIVAT_UPDATE_SUCCESS_DETAIL
+    _privat_delete_success_code = PRIVAT_DELETE_SUCCESS_CODE
+    _privat_delete_success_detail = PRIVAT_DELETE_SUCCESS_DETAIL
+    _privat_exsists_exception_code = PRIVAT_EXISTS_EXCEPTION_CODE
+    _privat_exsists_exception_detail = PRIVAT_EXISTS_EXCEPTION_DETAIL
+    _privat_does_not_exsists_exception_code = PRIVAT_DOES_NOT_EXISTS_EXCEPTION_CODE
+    _privat_does_not_exsists_exception_detail = PRIVAT_DOES_NOT_EXISTS_EXCEPTION_DETAIL
 
     @property
     def token(self) -> str:
@@ -180,9 +196,85 @@ class BasePrivatManager:
     def recipient_nceo(self, new_recipient_nceo: str):
         self._recipient_nceo = new_recipient_nceo
 
-    @classmethod
-    def session(cls) -> requests.sessions.Session:
-        return requests.Session()
+    @property
+    def privat_create_success_code(self) -> int:
+        return self._privat_create_success_code
+
+    @privat_create_success_code.setter
+    def privat_create_success_code(self, new_code: int) -> None:
+        self._privat_create_success_code = new_code
+
+    @property
+    def privat_create_success_detail(self) -> str:
+        return self._privat_create_success_detail
+
+    @privat_create_success_detail.setter
+    def privat_create_success_detail(self, new_detail: str) -> None:
+        self._privat_create_success_detail = new_detail
+
+    @property
+    def privat_update_success_code(self) -> int:
+        return self._privat_update_success_code
+
+    @privat_update_success_code.setter
+    def privat_update_success_code(self, new_code: int) -> None:
+        self._privat_update_success_code = new_code
+
+    @property
+    def privat_update_success_detail(self) -> str:
+        return self._privat_update_success_detail
+
+    @privat_update_success_detail.setter
+    def privat_update_success_detail(self, new_detail: str) -> None:
+        self._privat_update_success_detail = new_detail
+
+    @property
+    def privat_delete_success_code(self) -> int:
+        return self._privat_delete_success_code
+
+    @privat_delete_success_code.setter
+    def privat_delete_success_code(self, new_code: int) -> None:
+        self._privat_delete_success_code = new_code
+
+    @property
+    def privat_delete_success_detail(self) -> str:
+        return self._privat_delete_success_detail
+
+    @privat_delete_success_detail.setter
+    def privat_delete_success_detail(self, new_detail: str) -> None:
+        self._privat_delete_success_detail = new_detail
+
+    @property
+    def privat_exsists_exception_code(self) -> int:
+        return self._privat_exsists_exception_code
+
+    @privat_exsists_exception_code.setter
+    def privat_exsists_exception_code(self, new_code: int) -> None:
+        self._privat_exsists_exception_code = new_code
+
+    @property
+    def privat_exsists_exception_detail(self) -> str:
+        return self._privat_exsists_exception_detail
+
+    @privat_exsists_exception_detail.setter
+    def privat_exsists_exception_detail(self, new_detail: str) -> None:
+        self._privat_exsists_exception_detail = new_detail
+
+    @property
+    def privat_does_not_exsists_exception_code(self) -> int:
+        return self._privat_does_not_exsists_exception_code
+
+    @privat_does_not_exsists_exception_code.setter
+    def privat_does_not_exsists_exception_code(self, new_code: int) -> None:
+        self._privat_does_not_exsists_exception_code = new_code
+
+    @property
+    def privat_does_not_exsists_exception_detail(self) -> str:
+        return self._privat_does_not_exsists_exception_detail
+
+    @privat_does_not_exsists_exception_detail.setter
+    def privat_does_not_exsists_exception_detail(self, new_detail: str) -> None:
+        self._privat_does_not_exsists_exception_detail = new_detail
 
     @staticmethod
     def date(period: int) -> Dict:
@@ -216,6 +308,61 @@ class BasePrivatManager:
                 "document_type": self.document_type,
             }
             return payment_body
+        except Exception as exc:
+            exception = {"detail": str(exc)}
+            return exception
+
+    def create_success(self) -> Dict:
+        try:
+            response = {
+                "code": self.privat_create_success_code,
+                "detail": self.privat_create_success_detail,
+            }
+            return response
+        except Exception as exc:
+            exception = {"detail": str(exc)}
+            return exception
+
+    def update_success(self) -> Dict:
+        try:
+            response = {
+                "code": self.privat_update_success_code,
+                "detail": self.privat_update_success_detail,
+            }
+            return response
+        except Exception as exc:
+            exception = {"detail": str(exc)}
+            return exception
+
+    def delete_success(self) -> Dict:
+        try:
+            response = {
+                "code": self.privat_delete_success_code,
+                "detail": self.privat_delete_success_detail,
+            }
+            return response
+        except Exception as exc:
+            exception = {"detail": str(exc)}
+            return exception
+
+    def exists_exception(self) -> Dict:
+        try:
+            response = {
+                "code": self.privat_exsists_exception_code,
+                "detail": self.privat_exsists_exception_detail,
+            }
+            return response
+        except Exception as exc:
+            exception = {"detail": str(exc)}
+            return exception
+
+    def does_not_exsists_exception(self) -> Dict:
+        try:
+            response = {
+                "code": self.privat_does_not_exsists_exception_code,
+                "detail": self.privat_does_not_exsists_exception_detail,
+            }
+            return response
         except Exception as exc:
             exception = {"detail": str(exc)}
             return exception

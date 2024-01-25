@@ -8,7 +8,7 @@ def readme():
 
 setup(
     name="python_internal_privat",
-    version="1.0.5",
+    version="1.0.7",
     author="ihor.sotnyk",
     author_email="ihor.sotnyk@onix-systems.com",
     description="This module is designed for quick interaction with the privatbank API.",
@@ -22,17 +22,24 @@ setup(
         "async_privat": ["*.py"],
         "sync_privat": ["*.py"],
         "drf_privat": ["*.py"],
+        "fastapi_privat": ["*.py"],
     },
     install_requires=["python-dotenv==1.0.0"],
     extras_require={
         "http": ["requests>=2.25.1"],
         "aio": ["aiohttp==3.9.1"],
         "drf": ["Django>=4,<5", "djangorestframework", "requests>=2.25.1"],
+        "fastapi": ["fastapi[all]", "sqlalchemy", "psycopg2", "asyncpg"],
         "all": [
             "Django>=4,<5",
             "djangorestframework",
             "requests>=2.25.1",
+            "fastapi[all]",
             "aiohttp==3.9.1",
+            "sqlalchemy",
+            "psycopg2",
+            "asyncpg",
+            "alembic",
         ],
     },
     classifiers=[
