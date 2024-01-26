@@ -19,7 +19,8 @@ async def add_privatbank(
     schema: PrivatSchema, session: AsyncSession = Depends(async_session)
 ) -> Dict:
     try:
-        return await crud.create_privat(schema, session)
+        response = await crud.create_privat(schema, session)
+        return response
     except Exception as exc:
         exception = {"detail": str(exc)}
         return exception
@@ -32,7 +33,8 @@ async def change_privatbank(
     session: AsyncSession = Depends(async_session),
 ) -> Dict:
     try:
-        return await crud.update_privat(user_id, schema, session)
+        response = await crud.update_privat(user_id, schema, session)
+        return response
     except Exception as exc:
         exception = {"detail": str(exc)}
         return exception
@@ -43,7 +45,8 @@ async def delete_privatbank(
     user_id: str, session: AsyncSession = Depends(async_session)
 ) -> Dict:
     try:
-        return await crud.delete_privat(user_id, session)
+        response = await crud.delete_privat(user_id, session)
+        return response
     except Exception as exc:
         exception = {"detail": str(exc)}
         return exception
@@ -53,7 +56,8 @@ async def delete_privatbank(
 async def currencies(cashe_rate: bool) -> Dict:
     try:
         mng = AsyncPrivatManager()
-        return await mng.get_currencies(cashe_rate)
+        response = await mng.get_currencies(cashe_rate)
+        return response
     except Exception as exc:
         exception = {"detail": str(exc)}
         return exception
@@ -69,8 +73,10 @@ async def client_info(
         if payload is not None:
             mng.token = payload[0].privat_token
             mng.iban = payload[0].privat_iban
-            return await mng.get_client_info()
-        return mng.does_not_exsists_exception()
+            response = await mng.get_client_info()
+        else:
+            response = mng.does_not_exsists_exception()
+        return response
     except Exception as exc:
         exception = {"detail": str(exc)}
         return exception
@@ -84,8 +90,10 @@ async def balance(user_id: str, session: AsyncSession = Depends(async_session)) 
         if payload is not None:
             mng.token = payload[0].privat_token
             mng.iban = payload[0].privat_iban
-            return await mng.get_balance()
-        return mng.does_not_exsists_exception()
+            response = await mng.get_balance()
+        else:
+            response = mng.does_not_exsists_exception()
+        return response
     except Exception as exc:
         exception = {"detail": str(exc)}
         return exception
@@ -104,8 +112,10 @@ async def statement(
         if payload is not None:
             mng.token = payload[0].privat_token
             mng.iban = payload[0].privat_iban
-            return await mng.get_statement(period, limit)
-        return mng.does_not_exsists_exception()
+            response = await mng.get_statement(period, limit)
+        else:
+            response = mng.does_not_exsists_exception()
+        return response
     except Exception as exc:
         exception = {"detail": str(exc)}
         return exception
@@ -121,8 +131,10 @@ async def payment(
         if payload is not None:
             mng.token = payload[0].privat_token
             mng.iban = payload[0].privat_iban
-            return await mng.create_payment(schema.recipient, schema.amount)
-        return mng.does_not_exsists_exception()
+            response = await mng.create_payment(schema.recipient, schema.amount)
+        else:
+            response = mng.does_not_exsists_exception()
+        return response
     except Exception as exc:
         exception = {"detail": str(exc)}
         return exception

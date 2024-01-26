@@ -24,10 +24,11 @@ class SyncPrivatManager(BasePrivatManager):
         try:
             code = response.status_code
             response.raise_for_status()
-            response = {"code": code, "detail": response.json()}
-            return response
+            detail = response.json()
+            payload = self.privat_response(code, detail)
+            return payload
         except requests.exceptions.HTTPError as exc:
-            error_response = {"code": code, "detail": str(exc)}
+            error_response = self.privat_response(code, str(exc))
             return error_response
         except Exception as exc:
             exception = {"detail": str(exc)}
@@ -62,13 +63,14 @@ class SyncPrivatManager(BasePrivatManager):
 
     def get_balance(self) -> Dict:
         try:
-            client_info = self.get_client_info()
-            code = client_info.get("code")
-            payload = client_info.get("detail")
-            balance = {"code": code, "balance": payload["balances"][0]["balanceOutEq"]}
-            return balance
+            payload = self.get_client_info()
+            code = payload.get("code")
+            data = payload.get("detail")
+            balance = {"balance": data["balances"][0]["balanceOutEq"]}
+            response = self.privat_response(code, balance)
+            return response
         except Exception:
-            return client_info
+            return payload
 
     def get_statement(self, period: int, limit: int) -> Dict:
         try:

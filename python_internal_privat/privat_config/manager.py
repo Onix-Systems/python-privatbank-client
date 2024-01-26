@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Any
 from datetime import datetime
 from .config import (
     PRIVATBANK_CURRENCIES_CASHE_RATE_URI,
@@ -292,6 +292,14 @@ class BasePrivatManager:
             exception = {"detail": str(exc)}
             return exception
 
+    def privat_response(self, code: int, detail: Any) -> Dict:
+        try:
+            response = {"code": code, "detail": detail}
+            return response
+        except Exception as exc:
+            exception = {"detail": str(exc)}
+            return exception
+
     def payment_body(self, recipient: str, amount: float, iban: str) -> Dict:
         try:
             payment_body = {
@@ -305,7 +313,7 @@ class BasePrivatManager:
                 "payment_destination": self.payment_destination,
                 "payer_account": iban,
                 "payment_ccy": self.payment_ccy,
-                "document_type": self.document_type,
+                "document_type": self.document_type
             }
             return payment_body
         except Exception as exc:
@@ -314,10 +322,10 @@ class BasePrivatManager:
 
     def create_success(self) -> Dict:
         try:
-            response = {
-                "code": self.privat_create_success_code,
-                "detail": self.privat_create_success_detail,
-            }
+            response = self.privat_response(
+                self.privat_create_success_code,
+                self._privat_create_success_detail
+            )
             return response
         except Exception as exc:
             exception = {"detail": str(exc)}
@@ -325,10 +333,10 @@ class BasePrivatManager:
 
     def update_success(self) -> Dict:
         try:
-            response = {
-                "code": self.privat_update_success_code,
-                "detail": self.privat_update_success_detail,
-            }
+            response = self.privat_response(
+                self.privat_update_success_code,
+                self.privat_update_success_detail
+            )
             return response
         except Exception as exc:
             exception = {"detail": str(exc)}
@@ -336,10 +344,10 @@ class BasePrivatManager:
 
     def delete_success(self) -> Dict:
         try:
-            response = {
-                "code": self.privat_delete_success_code,
-                "detail": self.privat_delete_success_detail,
-            }
+            response = self.privat_response(
+                self.privat_delete_success_code,
+                self.privat_delete_success_detail
+            )
             return response
         except Exception as exc:
             exception = {"detail": str(exc)}
@@ -347,10 +355,10 @@ class BasePrivatManager:
 
     def exists_exception(self) -> Dict:
         try:
-            response = {
-                "code": self.privat_exsists_exception_code,
-                "detail": self.privat_exsists_exception_detail,
-            }
+            response = self.privat_response(
+                self.privat_exsists_exception_code,
+                self.privat_exsists_exception_detail
+            )
             return response
         except Exception as exc:
             exception = {"detail": str(exc)}
@@ -358,10 +366,10 @@ class BasePrivatManager:
 
     def does_not_exsists_exception(self) -> Dict:
         try:
-            response = {
-                "code": self.privat_does_not_exsists_exception_code,
-                "detail": self.privat_does_not_exsists_exception_detail,
-            }
+            response = self.privat_response(
+                self.privat_does_not_exsists_exception_code,
+                self.privat_does_not_exsists_exception_detail
+            )
             return response
         except Exception as exc:
             exception = {"detail": str(exc)}

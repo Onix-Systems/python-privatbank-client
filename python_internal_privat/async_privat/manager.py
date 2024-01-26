@@ -21,10 +21,10 @@ class AsyncPrivatManager(BasePrivatManager):
             code = response.status
             response.raise_for_status()
             detail = await response.json()
-            payload = {"code": code, "detail": detail}
+            payload = self.privat_response(code, detail)
             return payload
         except aiohttp.ClientResponseError as exc:
-            error_response = {"code": code, "detail": str(exc.message)}
+            error_response = self.privat_response(code, str(exc.message))
             return error_response
         except Exception as exc:
             exception = {"detail": str(exc)}
@@ -59,13 +59,14 @@ class AsyncPrivatManager(BasePrivatManager):
 
     async def get_balance(self) -> Dict:
         try:
-            client_info = await self.get_client_info()
-            code = client_info.get("code")
-            payload = client_info.get("detail")
-            balance = {"code": code, "balance": payload["balances"][0]["balanceOutEq"]}
-            return balance
+            payload = await self.get_client_info()
+            code = payload.get("code")
+            data = payload.get("detail")
+            balance = {"balance": data["balances"][0]["balanceOutEq"]}
+            response = self.privat_response(code, balance)
+            return response
         except Exception:
-            return client_info
+            return payload
 
     async def get_statement(self, period: int, limit: int) -> Dict:
         try:
