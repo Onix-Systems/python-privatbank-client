@@ -11,10 +11,10 @@ from async_privat.manager import AsyncPrivatManager
 from fastapi_privat import crud
 
 
-router = APIRouter(tags=["Privat"])
+router = APIRouter(tags=["Privat"], prefix="/privat")
 
 
-@router.post("/add-privat")
+@router.post("/add")
 async def add_privatbank(
     schema: PrivatSchema, session: AsyncSession = Depends(async_session)
 ) -> Dict:
@@ -26,7 +26,7 @@ async def add_privatbank(
         return exception
 
 
-@router.put("/change-privat")
+@router.put("/change")
 async def change_privatbank(
     user_id: str,
     schema: PrivatSchemaUpdate,
@@ -40,7 +40,7 @@ async def change_privatbank(
         return exception
 
 
-@router.delete("/delete-privat")
+@router.delete("/delete")
 async def delete_privatbank(
     user_id: str, session: AsyncSession = Depends(async_session)
 ) -> Dict:

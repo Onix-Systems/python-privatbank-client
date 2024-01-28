@@ -8,7 +8,7 @@ def readme():
 
 setup(
     name="privatbank_api_client",
-    version="1.1.2",
+    version="1.1.3",
     author="ihor.sotnyk",
     author_email="ihor.sotnyk@onix-systems.com",
     description="This module is designed for quick interaction with the privatbank API.",
