@@ -38,3 +38,18 @@ RECIPIENT_IFI_TEXT = os.getenv("RECIPIENT_IFI_TEXT", 'ПАТ КБ "ПРИВАТ�
 PAYMENT_DESTINATION = os.getenv("PAYMENT_DESTINATION", "test create pmnt to rest API")
 PAYMENT_CCY = os.getenv("PAYMENT_CCY", "UAH")
 DOCUMENT_TYPE = os.getenv("DOCUMENT_TYPE", "cr")
+
+PRIVAT_CREATE_SUCCESS_CODE = 201
+PRIVAT_CREATE_SUCCESS_DETAIL = "Privat added successfully."
+
+PRIVAT_UPDATE_SUCCESS_CODE = 200
+PRIVAT_UPDATE_SUCCESS_DETAIL = "Privat chanched successfully."
+
+PRIVAT_DELETE_SUCCESS_CODE = 204
+PRIVAT_DELETE_SUCCESS_DETAIL = "Privat deleted successfully."
+
+PRIVAT_EXISTS_EXCEPTION_CODE = 400
+PRIVAT_EXISTS_EXCEPTION_DETAIL = "Your privat is already exists."
+
+PRIVAT_DOES_NOT_EXISTS_EXCEPTION_CODE = 404
+PRIVAT_DOES_NOT_EXISTS_EXCEPTION_DETAIL = "Your privat has not been added yet."

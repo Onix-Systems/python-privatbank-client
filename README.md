@@ -2,24 +2,66 @@
 This module is designed for quick interaction with the privatbank API.
 
 ## Name
-python-internal-privat
+privatbank-api-client
 
 ## Installation
 This framework is published at the PyPI, install it with pip:
 
-    pip install python-internal-privat
+  1.This package makes it possible to use module methods in synchronous frameworks:
+
+    pip install privatbank-api-client[http]
+
+  2.This package makes it possible to use module methods in asynchronous frameworks:
+
+    pip install privatbank-api-client[aio]
+
+  3.This package makes it possible to use ready-made views with a synchronous script based on the Django Rest framework:
+
+    pip install privatbank-api-client[drf]
+
+  To get started, add the following packages to INSTALLED_APPS:
+
+    INSTALLED_APPS = [
+        ...
+        'rest_framework',
+        'drf_privat',
+    ]
+
+  Include drf_mono urls to your urls.py:
+
+      urlpatterns = [
+          ...
+          path('privat/', include('drf_privat.urls', namespace='drf_privat')),
+      ]
+
+  4.This package makes it possible to use ready-made routers with an asynchronous script based on the FastAPI framework:
+
+    pip install privatbank-api-client[fastapi]
+
+  5.To install all packages at once:
+
+    pip install privatbank-api-client[all]
 
 ## Usage
 1. First, install the "Autoclient" module of the "Privat24 for Business" complex designed to serve corporate clients and private entrepreneurs."Autoclient" is software that allows you to set up periodic automatic receipt of statements / account balances and import payments into Privat24.
 2. Then use this token to obtain personal data of a privatbank client.
-3. Finally, use this token and your account's iban to initialize client:
+3. For a synchronous request use this token and your account's iban to initialize client:
 
-    from python_internal_privat.managers import PrivatManager
+    from sync_privat.manager import SyncPrivatManager
 
     token = "xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
     iban = "UAxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
-    mng = PrivatManager(token, iban)
+    mng = SyncPrivatManager(token, iban)
+
+3. For a asynchronous request use this token and your account's iban to initialize client:
+
+    from async_privat.manager import AsyncPrivatManager
+
+    token = "xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    iban = "UAxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+    mng = AsyncPrivatManager(token, iban)
 
 ## Methods
 Get currencies (cashe rate)

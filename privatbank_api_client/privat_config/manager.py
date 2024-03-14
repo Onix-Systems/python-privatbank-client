@@ -1,8 +1,5 @@
-import json
-import requests
-from typing import Dict
+from typing import Dict, Any
 from datetime import datetime
-
 from .config import (
     PRIVATBANK_CURRENCIES_CASHE_RATE_URI,
     PRIVATBANK_CURRENCIES_NON_CASHE_RATE_URI,
@@ -19,23 +16,31 @@ from .config import (
     RECIPIENT_IFI,
     RECIPIENT_IFI_TEXT,
     RECIPIENT_NCEO,
+    PRIVAT_CREATE_SUCCESS_CODE,
+    PRIVAT_CREATE_SUCCESS_DETAIL,
+    PRIVAT_UPDATE_SUCCESS_CODE,
+    PRIVAT_UPDATE_SUCCESS_DETAIL,
+    PRIVAT_DELETE_SUCCESS_CODE,
+    PRIVAT_DELETE_SUCCESS_DETAIL,
+    PRIVAT_EXISTS_EXCEPTION_CODE,
+    PRIVAT_EXISTS_EXCEPTION_DETAIL,
+    PRIVAT_DOES_NOT_EXISTS_EXCEPTION_CODE,
+    PRIVAT_DOES_NOT_EXISTS_EXCEPTION_DETAIL,
 )
 
 
-class PrivatManager:
+class BasePrivatManager:
     def __init__(self, token=None, iban=None):
         self._token = token
         self._iban = iban
 
     _privat_balance_uri_body = PRIVATBANK_BALANCE_URI_BODY
     _privat_statement_uri_body = PRIVATBANK_STATEMENT_URI_BODY
-
     _privat_currencies_cashe_rate_uri = PRIVATBANK_CURRENCIES_CASHE_RATE_URI
     _privat_currencies_non_cashe_rate_uri = PRIVATBANK_CURRENCIES_NON_CASHE_RATE_URI
     _privat_balance_uri = PRIVATBANK_BALANCE_URI
     _privat_statement_uri = PRIVATBANK_STATEMENT_URI
     _privat_payment_uri = PRIVATBANK_PAYMENT_URI
-
     _document_number = DOCUMENT_NUMBER
     _document_type = DOCUMENT_TYPE
     _payment_ccy = PAYMENT_CCY
@@ -44,6 +49,16 @@ class PrivatManager:
     _recipient_ify = RECIPIENT_IFI
     _recipient_ify_text = RECIPIENT_IFI_TEXT
     _recipient_nceo = RECIPIENT_NCEO
+    _privat_create_success_code = PRIVAT_CREATE_SUCCESS_CODE
+    _privat_create_success_detail = PRIVAT_CREATE_SUCCESS_DETAIL
+    _privat_update_success_code = PRIVAT_UPDATE_SUCCESS_CODE
+    _privat_update_success_detail = PRIVAT_UPDATE_SUCCESS_DETAIL
+    _privat_delete_success_code = PRIVAT_DELETE_SUCCESS_CODE
+    _privat_delete_success_detail = PRIVAT_DELETE_SUCCESS_DETAIL
+    _privat_exsists_exception_code = PRIVAT_EXISTS_EXCEPTION_CODE
+    _privat_exsists_exception_detail = PRIVAT_EXISTS_EXCEPTION_DETAIL
+    _privat_does_not_exsists_exception_code = PRIVAT_DOES_NOT_EXISTS_EXCEPTION_CODE
+    _privat_does_not_exsists_exception_detail = PRIVAT_DOES_NOT_EXISTS_EXCEPTION_DETAIL
 
     @property
     def token(self) -> str:
@@ -181,12 +196,88 @@ class PrivatManager:
     def recipient_nceo(self, new_recipient_nceo: str):
         self._recipient_nceo = new_recipient_nceo
 
-    @classmethod
-    def session(cls) -> requests.sessions.Session:
-        return requests.Session()
+    @property
+    def privat_create_success_code(self) -> int:
+        return self._privat_create_success_code
+
+    @privat_create_success_code.setter
+    def privat_create_success_code(self, new_code: int) -> None:
+        self._privat_create_success_code = new_code
+
+    @property
+    def privat_create_success_detail(self) -> str:
+        return self._privat_create_success_detail
+
+    @privat_create_success_detail.setter
+    def privat_create_success_detail(self, new_detail: str) -> None:
+        self._privat_create_success_detail = new_detail
+
+    @property
+    def privat_update_success_code(self) -> int:
+        return self._privat_update_success_code
+
+    @privat_update_success_code.setter
+    def privat_update_success_code(self, new_code: int) -> None:
+        self._privat_update_success_code = new_code
+
+    @property
+    def privat_update_success_detail(self) -> str:
+        return self._privat_update_success_detail
+
+    @privat_update_success_detail.setter
+    def privat_update_success_detail(self, new_detail: str) -> None:
+        self._privat_update_success_detail = new_detail
+
+    @property
+    def privat_delete_success_code(self) -> int:
+        return self._privat_delete_success_code
+
+    @privat_delete_success_code.setter
+    def privat_delete_success_code(self, new_code: int) -> None:
+        self._privat_delete_success_code = new_code
+
+    @property
+    def privat_delete_success_detail(self) -> str:
+        return self._privat_delete_success_detail
+
+    @privat_delete_success_detail.setter
+    def privat_delete_success_detail(self, new_detail: str) -> None:
+        self._privat_delete_success_detail = new_detail
+
+    @property
+    def privat_exsists_exception_code(self) -> int:
+        return self._privat_exsists_exception_code
+
+    @privat_exsists_exception_code.setter
+    def privat_exsists_exception_code(self, new_code: int) -> None:
+        self._privat_exsists_exception_code = new_code
+
+    @property
+    def privat_exsists_exception_detail(self) -> str:
+        return self._privat_exsists_exception_detail
+
+    @privat_exsists_exception_detail.setter
+    def privat_exsists_exception_detail(self, new_detail: str) -> None:
+        self._privat_exsists_exception_detail = new_detail
+
+    @property
+    def privat_does_not_exsists_exception_code(self) -> int:
+        return self._privat_does_not_exsists_exception_code
+
+    @privat_does_not_exsists_exception_code.setter
+    def privat_does_not_exsists_exception_code(self, new_code: int) -> None:
+        self._privat_does_not_exsists_exception_code = new_code
+
+    @property
+    def privat_does_not_exsists_exception_detail(self) -> str:
+        return self._privat_does_not_exsists_exception_detail
+
+    @privat_does_not_exsists_exception_detail.setter
+    def privat_does_not_exsists_exception_detail(self, new_detail: str) -> None:
+        self._privat_does_not_exsists_exception_detail = new_detail
 
     @staticmethod
-    def __date(period: int) -> Dict:
+    def date(period: int) -> Dict:
         _day = 86400  # 1 day (UNIX)
         try:
             time_delta = int(datetime.now().timestamp()) - (period * _day)
@@ -201,116 +292,81 @@ class PrivatManager:
             exception = {"detail": str(exc)}
             return exception
 
-    def get_currencies(self, cashe_rate: bool) -> Dict:
+    def privat_response(self, code: int, detail: Any) -> Dict:
         try:
-            session = self.session()
-            if cashe_rate:
-                uri = self.privat_currencies_cashe_rate_uri
-            else:
-                uri = self.privat_currencies_non_cashe_rate_uri
-            response = session.get(uri)
-            code = response.status_code
-            response.raise_for_status()
-            payload = {"code": code, "detail": response.json()}
-            return payload
-        except requests.exceptions.HTTPError as exc:
-            error_response = {"code": code, "detail": str(exc)}
-            return error_response
+            response = {"code": code, "detail": detail}
+            return response
         except Exception as exc:
             exception = {"detail": str(exc)}
             return exception
 
-    def get_client_info(self) -> Dict:
-        try:
-            session = self.session()
-            token = self.token
-            iban = self.iban
-            date = self.__date(0).get("date")
-            balance_uri = self.privat_balance_uri
-            uri_body = self.privat_balance_uri_body
-            uri = uri_body.format(balance_uri, iban, date)
-            headers = {"token": token}
-            response = session.get(uri, headers=headers)
-            code = response.status_code
-            response.raise_for_status()
-            payload = {"code": code, "detail": response.json()}
-            return payload
-        except requests.exceptions.HTTPError as exc:
-            error_response = {"code": code, "detail": str(exc)}
-            return error_response
-        except Exception as exc:
-            exception = {"detail": str(exc)}
-            return exception
-
-    def get_balance(self) -> Dict:
-        try:
-            client_info = self.get_client_info()
-            code = client_info.get("code")
-            payload = client_info.get("detail")
-            balance = {"code": code, "balance": payload["balances"][0]["balanceOutEq"]}
-            return balance
-        except Exception:
-            return client_info
-
-    def get_statement(self, period: int, limit: int) -> Dict:
-        try:
-            session = self.session()
-            token = self.token
-            iban = self.iban
-            statement_uri = self.privat_statement_uri
-            uri_body = self.privat_statement_uri_body
-            date = self.__date(period).get("date")
-            uri = uri_body.format(statement_uri, iban, date, limit)
-            headers = {"token": token}
-            response = session.get(uri, headers=headers)
-            code = response.status_code
-            response.raise_for_status()
-            payload = {"code": code, "detail": response.json()}
-            return payload
-        except requests.exceptions.HTTPError as exc:
-            error_response = {"code": code, "detail": str(exc)}
-            return error_response
-        except Exception as exc:
-            exception = {"detail": str(exc)}
-            return exception
-
-    def __payment_body(self, recipient: str, amount: float, iban: str) -> Dict:
+    def payment_body(self, recipient: str, amount: float, iban: str) -> Dict:
         try:
             payment_body = {
-                "document_number": self._document_number,
+                "document_number": self.document_number,
                 "recipient_card": recipient,
-                "recipient_nceo": self._recipient_nceo,
-                "payment_naming": self._payment_naming,
+                "recipient_nceo": self.recipient_nceo,
+                "payment_naming": self.payment_naming,
                 "payment_amount": amount,
-                "recipient_ifi": self._recipient_ify,
-                "recipient_ifi_text": self._recipient_ify_text,
-                "payment_destination": self._payment_destination,
+                "recipient_ifi": self.recipient_ify,
+                "recipient_ifi_text": self.recipient_ify_text,
+                "payment_destination": self.payment_destination,
                 "payer_account": iban,
-                "payment_ccy": self._payment_ccy,
-                "document_type": self._document_type,
+                "payment_ccy": self.payment_ccy,
+                "document_type": self.document_type,
             }
             return payment_body
         except Exception as exc:
             exception = {"detail": str(exc)}
             return exception
 
-    def create_payment(self, recipient: str, amount: float) -> Dict:
+    def create_success(self) -> Dict:
         try:
-            session = self.session()
-            token = self.token
-            iban = self.iban
-            payment_body = self.__payment_body(recipient, amount, iban)
-            data = json.dumps(payment_body)
-            headers = {"token": token}
-            uri = self.privat_payment_uri
-            response = session.post(uri, headers=headers, data=data)
-            code = response.status_code
-            response.raise_for_status()
-            payload = {"code": code, "detail": response.json()}
-            return payload
-        except requests.exceptions.HTTPError as exc:
-            error_response = {"code": code, "detail": str(exc)}
-            return error_response
+            response = self.privat_response(
+                self.privat_create_success_code, self._privat_create_success_detail
+            )
+            return response
+        except Exception as exc:
+            exception = {"detail": str(exc)}
+            return exception
+
+    def update_success(self) -> Dict:
+        try:
+            response = self.privat_response(
+                self.privat_update_success_code, self.privat_update_success_detail
+            )
+            return response
+        except Exception as exc:
+            exception = {"detail": str(exc)}
+            return exception
+
+    def delete_success(self) -> Dict:
+        try:
+            response = self.privat_response(
+                self.privat_delete_success_code, self.privat_delete_success_detail
+            )
+            return response
+        except Exception as exc:
+            exception = {"detail": str(exc)}
+            return exception
+
+    def exists_exception(self) -> Dict:
+        try:
+            response = self.privat_response(
+                self.privat_exsists_exception_code, self.privat_exsists_exception_detail
+            )
+            return response
+        except Exception as exc:
+            exception = {"detail": str(exc)}
+            return exception
+
+    def does_not_exsists_exception(self) -> Dict:
+        try:
+            response = self.privat_response(
+                self.privat_does_not_exsists_exception_code,
+                self.privat_does_not_exsists_exception_detail,
+            )
+            return response
         except Exception as exc:
             exception = {"detail": str(exc)}
             return exception
