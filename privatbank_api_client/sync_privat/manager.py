@@ -1,21 +1,48 @@
 import json
 import requests
 from typing import Dict
-from privat_config.manager import BasePrivatManager
+from privatbank_api_client.privat_config.manager import BasePrivatManager
 
 
 class SyncPrivatManager(BasePrivatManager):
+    """
+    SyncPrivatManager provides methods to interact with PrivatBank APIs synchronously.
+    The class is used for retrieving account information, balances, making payments,
+    and obtaining transaction statements.
+    """
+
     @classmethod
+    def session(cls) -> requests.sessions.Session:
+        """
+        Create and return a session object for making HTTP requests.
+
+        :return: A new requests.Session instance.
+        :rtype: requests.sessions.Session
+        """
+
     def session(cls) -> requests.sessions.Session:
         return requests.Session()
 
     def sync_request(
-        self,
-        method: str,
-        uri: str,
-        headers=None,
-        data=None,
+            self,
+            method: str,
+            uri: str,
+            headers=None,
+            data=None,
     ) -> Dict:
+        """
+            Perform a synchronous HTTP request using the specified method, URI, headers, and data
+            :param method: HTTP method for the request (e.g., "GET", "POST").
+            :type method: str
+            :param uri: The URI to which the request is sent.
+            :type uri: str
+            :param headers: Optional headers to include in the request.
+            :type headers: dict or None
+            :param data: Optional data payload for POST requests.
+            :type data: dict, str, bytes, or None
+            :return: The response from the server parsed into a dictionary.
+            :rtype: dict
+            """
         session = self.session()
         if method == "GET":
             response = session.get(uri, headers=headers)
@@ -35,6 +62,14 @@ class SyncPrivatManager(BasePrivatManager):
             return exception
 
     def get_currencies(self, cashe_rate: bool) -> Dict:
+        """
+        Obtain exchange rates from PrivatBank APIs.
+
+        :param cashe_rate: Whether to fetch cash exchange rates.
+        :type cashe_rate: bool
+        :return: A dictionary containing exchange rate information.
+        :rtype: dict
+        """
         try:
             if cashe_rate:
                 uri = self.privat_currencies_cashe_rate_uri
@@ -47,6 +82,12 @@ class SyncPrivatManager(BasePrivatManager):
             return exception
 
     def get_client_info(self) -> Dict:
+        """
+        Retrieve client account information (e.g., balances or transactions).
+
+        :return: A dictionary comprising client details from PrivatBank.
+        :rtype: dict
+        """
         try:
             token = self.token
             iban = self.iban
@@ -62,6 +103,12 @@ class SyncPrivatManager(BasePrivatManager):
             return exception
 
     def get_balance(self) -> Dict:
+        """
+        Retrieve the account balance from the client information.
+
+        :return: A dictionary containing the account balance.
+        :rtype: dict
+        """
         try:
             payload = self.get_client_info()
             code = payload.get("code")
@@ -73,6 +120,16 @@ class SyncPrivatManager(BasePrivatManager):
             return payload
 
     def get_statement(self, period: int, limit: int) -> Dict:
+        """
+        Retrieve the account statement for a given period and limit.
+
+        :param period: The number of days prior to the current date for which to fetch transactions.
+        :type period: int
+        :param limit: The maximum number of transactions to fetch.
+        :type limit: int
+        :return: A dictionary containing the statement details.
+        :rtype: dict
+        """
         try:
             token = self.token
             iban = self.iban
@@ -88,6 +145,16 @@ class SyncPrivatManager(BasePrivatManager):
             return exception
 
     def create_payment(self, recipient: str, amount: float) -> Dict:
+        """
+        Create a payment transaction to a specified recipient.
+
+        :param recipient: The recipient's account identifier.
+        :type recipient: str
+        :param amount: The amount to be transferred.
+        :type amount: float
+        :return: A dictionary denoting the payment response from the server.
+        :rtype: dict
+        """
         try:
             token = self.token
             iban = self.iban

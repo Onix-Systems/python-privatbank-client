@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import Privat
+from privatbank_api_client.drf_privat.models import Privat
 
 
 @admin.register(Privat)
-class MonoAdmin(admin.ModelAdmin):
+class PrivatAdmin(admin.ModelAdmin):
     list_display = (
         "user",
         "privat_token",

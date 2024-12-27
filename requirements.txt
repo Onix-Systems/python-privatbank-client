@@ -4,7 +4,12 @@ aiohttp==3.9.1
 Django>=4,<5
 djangorestframework
 fastapi[all]
-psycopg2
+psycopg2-binary
 sqlalchemy
 asyncpg
 alembic
+sphinx
+sphinx-autobuild
+sphinx_rtd_theme
+python-dotenv
+asyncpg
