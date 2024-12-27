@@ -19,8 +19,6 @@ class SyncPrivatManager(BasePrivatManager):
         :return: A new requests.Session instance.
         :rtype: requests.sessions.Session
         """
-
-    def session(cls) -> requests.sessions.Session:
         return requests.Session()
 
     def sync_request(
