@@ -1,9 +1,9 @@
 from typing import Dict
 from sqlalchemy import insert, select, update, delete
 from sqlalchemy.ext.asyncio import AsyncSession
-from fastapi_privat.models import PrivatModel as mdl
-from fastapi_privat.schemas import PrivatSchema, PrivatSchemaUpdate
-from async_privat.manager import AsyncPrivatManager
+from privatbank_api_client.fastapi_privat.models import PrivatModel as mdl
+from privatbank_api_client.fastapi_privat.schemas import PrivatSchema, PrivatSchemaUpdate
+from privatbank_api_client.async_privat.manager import AsyncPrivatManager
 
 
 async def create_privat(schema: PrivatSchema, session: AsyncSession) -> Dict:

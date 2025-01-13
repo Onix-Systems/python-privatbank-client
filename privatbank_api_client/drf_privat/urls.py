@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import (
+from privatbank_api_client.drf_privat.views import (
     PrivatView,
     PrivatClientInfo,
     PrivatBalanceView,

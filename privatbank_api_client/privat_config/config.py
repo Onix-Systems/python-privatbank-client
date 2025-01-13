@@ -3,7 +3,6 @@ import os
 
 load_dotenv()
 
-
 PRIVATBANK_BALANCE_URI_BODY = "{0}?acc={1}&startDate={2}"
 PRIVATBANK_STATEMENT_URI_BODY = "{0}?acc={1}&startDate={2}&limit={3}"
 
@@ -20,10 +19,8 @@ PRIVATBANK_PAYMENT_URI = os.getenv(
     "https://acp.privatbank.ua/api/proxy/payment/create_pred",
 )
 # PrivatBank cash rate (in branches)
-PRIVATBANK_CURRENCIES_CASHE_RATE_URI = os.getenv(
-    "PRIVATBANK_CURRENCIES_CASHE_RATE_URI",
-    "https://api.privatbank.ua/p24api/pubinfo?exchange&coursid=5",
-)
+PRIVATBANK_CURRENCIES_CASHE_RATE_URI = os.getenv("PRIVATBANK_CURRENCIES_CASHE_RATE_URI",
+                                                 "https://api.privatbank.ua/p24api/pubinfo?exchange&coursid=5",)
 # Non-cash rate of PrivatBank (conversion by cards, Privat24, replenishment of deposits)
 PRIVATBANK_CURRENCIES_NON_CASHE_RATE_URI = os.getenv(
     "PRIVATBANK_CURRENCIES_NON_CASHE_RATE_URI",

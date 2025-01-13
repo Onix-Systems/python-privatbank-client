@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Privat
+from privatbank_api_client.drf_privat.models import Privat
 
 
 class PrivatSerializer(serializers.ModelSerializer):
