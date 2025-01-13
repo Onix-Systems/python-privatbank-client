@@ -2,22 +2,22 @@
 This module is designed for quick interaction with the privatbank API.
 
 ## Name
-privatbank-api-client
+python-privatbank-client
 
 ## Installation
 This framework is published at the PyPI, install it with pip:
 
   1.This package makes it possible to use module methods in synchronous frameworks:
 
-    pip install privatbank-api-client[http]
+    pip install python-privatbank-client[http]
 
   2.This package makes it possible to use module methods in asynchronous frameworks:
 
-    pip install privatbank-api-client[aio]
+    pip install python-privatbank-client[aio]
 
   3.This package makes it possible to use ready-made views with a synchronous script based on the Django Rest framework:
 
-    pip install privatbank-api-client[drf]
+    pip install python-privatbank-client[drf]
 
   To get started, add the following packages to INSTALLED_APPS:
 
@@ -36,11 +36,11 @@ This framework is published at the PyPI, install it with pip:
 
   4.This package makes it possible to use ready-made routers with an asynchronous script based on the FastAPI framework:
 
-    pip install privatbank-api-client[fastapi]
+    pip install python-privatbank-client[fastapi]
 
   5.To install all packages at once:
 
-    pip install privatbank-api-client[all]
+    pip install python-privatbank-client[all]
 
 ## Usage
 1. First, install the "Autoclient" module of the "Privat24 for Business" complex designed to serve corporate clients and private entrepreneurs."Autoclient" is software that allows you to set up periodic automatic receipt of statements / account balances and import payments into Privat24.

@@ -16,7 +16,7 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.viewcode',
 ]
-project = 'Python-privatbank-api-client Library'
+project = 'Python-python-privatbank-client Library'
 copyright = '2024, Onix-Systems'
 author = 'Onix-Systems'
 release = '1.0'

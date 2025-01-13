@@ -6,19 +6,19 @@ Installation
 
    .. code-block:: bash
 
-      pip install privatbank-api-client[http]
+      pip install python-privatbank-client[http]
 
 2. This package makes it possible to use module methods in asynchronous frameworks:
 
    .. code-block:: bash
 
-      pip install privatbank-api-client[aio]
+      pip install python-privatbank-client[aio]
 
 3. This package makes it possible to use ready-made views with a synchronous script based on the Django Rest framework:
 
    .. code-block:: bash
 
-      pip install privatbank-api-client[drf]
+      pip install python-privatbank-client[drf]
 
 To get started, add the following packages to ``INSTALLED_APPS``:
 
@@ -43,10 +43,10 @@ Include ``drf_mono`` urls to your ``urls.py``:
 
    .. code-block:: python
 
-      pip install privatbank-api-client[fastapi]
+      pip install python-privatbank-client[fastapi]
 
 5. To install all packages at once:
 
    .. code-block:: python
 
-      pip install privatbank-api-client[all]
+      pip install python-privatbank-client[all]

@@ -7,14 +7,14 @@ def readme():
 
 
 setup(
-    name="privatbank_api_client",
-    version="1.1.3",
-    author="ihor.sotnyk",
-    author_email="ihor.sotnyk@onix-systems.com",
+    name="python-privatbank-client",
+    version="0.1.0",
+    author="Viacheslav Lisovoi",
+    author_email="viacheslav.lisovoi@onix-systems.com",
     description="This module is designed for quick interaction with the privatbank API.",
     long_description=readme(),
     long_description_content_type="text/markdown",
-    url="https://gitlab.onix.ua/onix-systems/python-internal-privat",
+    url="https://github.com/Onix-Systems/python-privatbank-client/tree/v0.1.0",
     packages=find_namespace_packages(where="privatbank_api_client"),
     package_dir={"": "privatbank_api_client"},
     package_data={
