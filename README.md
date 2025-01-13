@@ -1,6 +1,12 @@
 ## python-internal-privat
 This module is designed for quick interaction with the privatbank API.
 
+## Documentation
+
+[![Documentation Status](https://readthedocs.org/projects/python-privatbank-client/badge/?version=latest)](https://python-privatbank-client.readthedocs.io/en/latest/?badge=latest)
+---
+The full documentation is available [here](https://python-privatbank-client.readthedocs.io/en/latest/overview.html).
+
 ## Name
 python-privatbank-client
 
