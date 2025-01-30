@@ -1,16 +1,16 @@
-# Contributing to Python-Pin-Payments Library
+# # Contributing to python-privatbank-client Library
 
-First off, thank you for considering contributing to Python-Pin-Payments Library! It's people like you that make this project great!
+First off, thank you for considering contributing to python-privatbank-client Library! It's people like you that make this project great!
 
 ## Code of Conduct
 
-This project and everyone participating in it is governed by the [Python-Pin-Payments Library Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [viacheslav.lisovoi@onix-systems.com](mailto:viacheslav.lisovoi@onix-systems.com).
+This project and everyone participating in it is governed by the [python-privatbank-client Library Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [contact@example.com](mailto:contact@example.com).
 
 ## How Can I Contribute?
 
 ### Reporting Bugs
 
-This section guides you through submitting a bug report for Python-Pin-Payments Library. Following these guidelines helps maintainers and the community understand your report, reproduce the behavior, and find related reports.
+This section guides you through submitting a bug report for python-privatbank-client Library. Following these guidelines helps maintainers and the community understand your report, reproduce the behavior, and find related reports.
 
 #### Before Submitting A Bug Report
 
@@ -31,11 +31,11 @@ Bugs are tracked as GitHub issues. After you've determined that a bug hasn't bee
 
 ### Suggesting Enhancements
 
-This section guides you through submitting an enhancement suggestion for Python-Pin-Payments Library, including completely new features and minor improvements to existing functionality.
+This section guides you through submitting an enhancement suggestion for python-privatbank-client Library, including completely new features and minor improvements to existing functionality.
 
 #### Before Submitting An Enhancement Suggestion
 
-- **Perform a cursory search** to see if the enhancement has already been suggested.  If it has, add a comment to the existing issue instead of opening a new one.
+- **Perform a cursory search** to see if the enhancement has already been suggested. If it has, add a comment to the existing issue instead of opening a new one.
 
 #### How Do I Submit A (Good) Enhancement Suggestion?
 
@@ -49,7 +49,7 @@ Enhancement suggestions are tracked as GitHub issues. After you've determined th
 ### Your First Code Contribution
 
 - **Get started with our documentation**: follow the setup instructions in the README.md file.
-- **Check for open issues**: start by looking through the [issues](https://github.com/yourusername/python-pin-payments/issues).
+- **Check for open issues**: start by looking through the [issues](https://github.com/Onix-Systems/python-privatbank-client/issues).
 
 ### Pull Requests
 
@@ -57,31 +57,40 @@ The process described here has several goals:
 
 - Maintain the project's quality
 - Fix problems that are important to users
-- Engage the community in working toward the best possible Python-Pin-Payments Library
+- Engage the community in working toward the best possible python-privatbank-client Library
 - Enable a sustainable system for maintainers to review contributions
 
 Please follow these steps to have your contribution considered by the maintainers:
 
 1. **Create a branch** for your contribution.
 2. **Write tests** for your changes.
-3. **If you added code that should be tested, add tests**.
-4. **Ensure the test suite passes**.
-5. **Make sure your code lints**.
-6. **Submit a pull request** through the GitHub.
+3. **Ensure the test suite passes** by running `pytest`.
+4. **Make sure your code lints** and adheres to the [PEP 8](https://www.python.org/dev/peps/pep-0008/) style guide.
+5. **Submit a pull request** through GitHub.
 
-Code Style
-----------
+### What Happens Next?
+
+Once you submit a pull request:
+
+1. Your pull request will be reviewed by a maintainer.
+2. You will be notified if further changes are required.
+3. If accepted, your code will be merged into the repository as a part of the next release.
+
+Make sure to follow up on comments left by reviewers promptly to ensure the process goes smoothly.
+
+---
+
+## Code Style
 
 - Follow the [PEP 8](https://www.python.org/dev/peps/pep-0008/) style guide.
-- Ensure that the code passes all linting checks.
+- Ensure that the code passes all linting checks (e.g., using `flake8` or similar tools).
 
-Tests
------
+## Tests
 
 - Use [pytest](https://pytest.org/) for testing.
-- Ensure all tests pass before submitting a pull request.
+- Ensure all tests pass locally before submitting a pull request.
+- Add tests for new functionality or edge cases you are addressing.
 
-Licensing
----------
+## Licensing
 
-By contributing to Python-Pin-Payments Library, you agree that your contributions will be licensed under the MIT License.
+By contributing to python-privatbank-client Library, you agree that your contributions will be licensed under the MIT License. If your files require a license header, include the agreed-upon MIT header in those files.Contributing to python-privatbank-client Library
